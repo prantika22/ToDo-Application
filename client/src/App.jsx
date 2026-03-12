@@ -6,6 +6,7 @@ import './index.css';
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newTitle, setNewTitle] = useState('');
+  const [newPriority, setNewPriority] = useState('Medium');
   const [loading, setLoading] = useState(true);
   const [confirmTask, setConfirmTask] = useState(null);
   const [warningMessage, setWarningMessage] = useState('');
@@ -48,9 +49,10 @@ function App() {
     }
 
     try {
-      const response = await api.createTask(trimmedTitle);
+      const response = await api.createTask(trimmedTitle, newPriority);
       setTasks([response.data, ...tasks]);
       setNewTitle('');
+      setNewPriority('Medium');
     } catch (error) {
       console.error('Error adding task:', error);
     }
@@ -81,6 +83,15 @@ function App() {
     }
   };
 
+  const handlePriorityUpdate = async (id, nextPriority) => {
+    try {
+      const response = await api.updateTask(id, { priority: nextPriority });
+      setTasks(tasks.map(t => t.id === id ? response.data : t));
+    } catch (error) {
+      console.error('Error updating priority:', error);
+    }
+  };
+
   const handleDelete = async (id) => {
     try {
       await api.deleteTask(id);
@@ -102,6 +113,18 @@ function App() {
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
           />
+          <div className="priority-selector">
+            {['Low', 'Medium', 'High'].map((p) => (
+              <button
+                key={p}
+                type="button"
+                className={`p-option ${p.toLowerCase()} ${newPriority === p ? 'active' : ''}`}
+                onClick={() => setNewPriority(p)}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
           <button type="submit" className="add-btn">
             <Plus size={20} />
           </button>
@@ -121,11 +144,25 @@ function App() {
                 <div className={`checkbox ${task.completed ? 'checked' : ''}`}>
                   {task.completed && <CheckCircle size={16} color="white" />}
                 </div>
-                <span className={`task-title ${task.completed ? 'completed' : ''}`}>
-                  {task.title}
-                </span>
+                <div className="task-title-group">
+                  <span className={`task-title ${task.completed ? 'completed' : ''}`}>
+                    {task.title}
+                  </span>
+                </div>
               </div>
               <div className="actions">
+                {task.priority && (
+                  <select 
+                    className={`priority-select-inline priority-${task.priority.toLowerCase()}`}
+                    value={task.priority}
+                    onChange={(e) => handlePriorityUpdate(task.id, e.target.value)}
+                    onClick={(e) => e.stopPropagation()} // Prevent toggling completion
+                  >
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                )}
                 <button
                   onClick={() => handleDelete(task.id)}
                   className="delete-btn"

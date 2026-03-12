@@ -11,11 +11,11 @@ exports.getAllTasks = async (req, res) => {
 
 exports.createTask = async (req, res) => {
     try {
-        const { title } = req.body;
+        const { title, priority } = req.body;
         if (!title) {
             return res.status(400).json({ error: 'Title is required' });
         }
-        const [newTask] = await db('tasks').insert({ title }).returning('*');
+        const [newTask] = await db('tasks').insert({ title, priority }).returning('*');
         res.status(201).json(newTask);
     } catch (error) {
         res.status(500).json({ error: 'Failed to create task' });
@@ -25,10 +25,11 @@ exports.createTask = async (req, res) => {
 exports.updateTask = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, completed } = req.body;
+        const { title, completed, priority } = req.body;
         const updateData = {};
         if (title !== undefined) updateData.title = title;
         if (completed !== undefined) updateData.completed = completed;
+        if (priority !== undefined) updateData.priority = priority;
 
         const [updatedTask] = await db('tasks')
             .where({ id })

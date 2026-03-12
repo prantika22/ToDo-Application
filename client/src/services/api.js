@@ -24,8 +24,8 @@ export const getTasks = async () => {
   return response;
 };
 
-export const createTask = async (title) => {
-  const response = await axios.post(getUrl('create_task', 'tasks'), { title });
+export const createTask = async (title, priority) => {
+  const response = await axios.post(getUrl('create_task', 'tasks'), { title, priority });
   console.log("CREATE TASK RAW RESPONSE:", response.data);
   
   if (Array.isArray(response.data) && response.data.length > 0) {
