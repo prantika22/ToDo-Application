@@ -2,20 +2,20 @@
 
 A professional, modular To-Do application built with React (Frontend), Node.js/Express (Backend), and PostgreSQL (Database).
 
-## 🚀 Features
+## Features
 
 - **Modern UI**: Dark-themed, glassmorphism UI built with Vanilla CSS and React.
 - **Modular Backend**: Clean separation of concerns with dedicated controllers and routes.
 - **Robust Data Management**: PostgreSQL integration using Knex.js for migrations and queries.
 - **Full CRUD**: Create, Read, Update (toggle status), and Delete tasks.
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Frontend**: React, Vite, Axios, Lucide-React
 - **Backend**: Node.js, Express, Knex.js, PostgreSQL
 - **Dev Tools**: Dotenv, Nodemon
 
-## 📋 Database Configuration
+## Database Configuration
 
 The application is configured to connect to a PostgreSQL database with the following details:
 
@@ -24,7 +24,7 @@ The application is configured to connect to a PostgreSQL database with the follo
 - **Username**: `aipoc`
 - **Database**: `todo_app1`
 
-## 🏃 Getting Started
+## Getting Started
 
 ### 1. Backend Setup
 Navigate to the `server` directory and install dependencies:
@@ -67,7 +67,7 @@ npm run dev -- --port 3000
 
 The application will be available at [http://localhost:3000](http://localhost:3000).
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 ├── client/          # React application (Vite)
